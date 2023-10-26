@@ -25,8 +25,8 @@ def drop_unwanted_columns(data, columns_to_drop):
     return data
 
 
-def is_null(input_file):
-    df = pd.read_csv(input_file)
+def is_null(csv_file):
+    df = pd.read_csv(csv_file)
     null_values = df.isnull().sum()
 
     if null_values.sum() > 0:
@@ -35,7 +35,18 @@ def is_null(input_file):
     else:
         print("The CSV file does not contain any null values.")
 
-def property_type_reidentification(data):
+def property_type_values(csv_file):
+    df = pd.read_csv(csv_file)
+    property_type = df["PROPERTY TYPE"].value_counts()
+    print(property_type)
+
+def property_type_drop_rows(csv_file):
+    df = pd.read_csv(csv_file)
+    values_to_keep = df[df['PROPERTY TYPE'].isin(['Single Family Residential', 'Townhouse' ])]
+    values_to_keep.to_csv(csv_file, index=False)
+    print(f"Filtered data saved to {csv_file}")
+
+def property_type_reclassification(csv_file):
     pass
 
 def city_reidentification(data):
@@ -56,11 +67,18 @@ def calc_price_per_sqft(data):
 
 
 #example call for drop_unwanted_colums
-#input_file = 'feature_prediction.csv'
+input_file = 'feature_prediction.csv'
 #input_data = pd.read_csv(input_file)
 #columns_to_remove = ['YEAR BUILT']
 #cleaned_data = drop_unwanted_columns(input_data, columns_to_remove)
 #cleaned_data.to_csv(input_file, index=False)
 
 #example call for is_null
-#is_null(input_file)
+is_null(input_file)
+
+#example call for property_type_values
+#property_type_values(input_file)
+
+#example call for property_type_reclassification
+#input_csv_file = 'original_data.csv'  # Replace with your input CSV file path
+#property_type_drop_rows(input_file)
