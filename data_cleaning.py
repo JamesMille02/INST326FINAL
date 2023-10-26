@@ -28,10 +28,9 @@ def combine_csv_files(input_folder, output_file):
     combined_data.to_csv(output_file, index=False)
     print(f"Combined {len(csv_files)} CSV files into {output_file}")
 
-
-file_path = "final_data_set.csv"  # Replace with the path to your CSV file
-data = pd.read_csv(file_path)
-data.head()
+input_folder = r"C:\Users\99jam\OneDrive\Documents\GitHub\INST326Final\redfin"
+output_file = r"C:\Users\99jam\OneDrive\Documents\GitHub\INST326Final\final_data_set.csv"
+combine_csv_files(input_folder, output_file)
 
 
 
