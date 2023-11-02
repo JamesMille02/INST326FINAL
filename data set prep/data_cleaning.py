@@ -2,6 +2,15 @@ import pandas as pd
 import os
 
 def combine_csv_files(input_folder, output_file):
+    """This metod takes multiple csv files and combines them into one. Prints 
+    the number of files combined into the output file.
+
+    Args:
+        input_folder: the path to a folder containing csv files
+        output_file: the file path you want the csvs to be written into
+    
+    Returned
+    """
     csv_files = [file for file in os.listdir(input_folder)]
     
     if not csv_files:
@@ -20,12 +29,23 @@ def combine_csv_files(input_folder, output_file):
     combined_data.to_csv(output_file, index=False)
     print(f"Combined {len(csv_files)} CSV files into {output_file}")
 
-def drop_unwanted_columns(data, columns_to_drop):
-    data = data.drop(columns=columns_to_drop, errors='ignore')
+def drop_unwanted_columns(csv_file, columns_to_drop):
+    """Takes the csv file and drops specified columns.
+
+    Args: 
+        data: the file path that you want to drop the columns from
+        columns_to_drop: a list of columns that you want to drop
+    
+    Returns:
+        returns the altered data set without the dropped columns
+    """
+    data = csv_file.drop(columns=columns_to_drop, errors='ignore')
     return data
 
 
 def is_null(csv_file):
+    """Takes a csv file and checks if any of the 
+    """
     df = pd.read_csv(csv_file)
     null_values = df.isnull().sum()
 
@@ -49,10 +69,10 @@ def property_type_drop_rows(csv_file):
 def property_type_reclassification(csv_file):
     pass
 
-def city_reidentification(data):
+def city_reclassification(data):
     pass
 
-def column_classification_chec(data):
+def column_classification_check(data):
     pass
 
 def hoa_prep(data):
