@@ -44,7 +44,12 @@ def drop_unwanted_columns(csv_file, columns_to_drop):
 
 
 def is_null(csv_file):
-    """Takes a csv file and checks if any of the 
+    """Takes a csv file and checks if any of the values are null for each 
+    column.
+
+    Args:
+        file path to the csv file that you want to check the null values for the
+        columns.
     """
     df = pd.read_csv(csv_file)
     null_values = df.isnull().sum()
@@ -56,32 +61,67 @@ def is_null(csv_file):
         print("The CSV file does not contain any null values.")
 
 def property_type_values(csv_file):
+    """Counts the different types of property types value.
+
+    Args:
+        csv_file: the path to the csv file that contains the property type
+        values.
+    """
     df = pd.read_csv(csv_file)
     property_type = df["PROPERTY TYPE"].value_counts()
     print(property_type)
 
 def property_type_drop_rows(csv_file):
+    """Drops the unwanted property types row. This is because the scope of the 
+    project only contains the home type values.
+
+    Args:
+        csv_file: the file path to the csv file that contains the property
+        type values.
+    """
     df = pd.read_csv(csv_file)
     values_to_keep = df[df['PROPERTY TYPE'].isin(['Single Family Residential', 'Townhouse' ])]
     values_to_keep.to_csv(csv_file, index=False)
     print(f"Filtered data saved to {csv_file}")
 
 def property_type_reclassification(csv_file):
+    """Turns the two property type columns values into numeric values because the 
+    machine learning model only accepts numeric values
+
+    Args:
+        csv_file: the file path to the csv file that contains the property
+        type values. 
+    """
     pass
 
 def city_reclassification(data):
+    """Turns the city strings into numeric values in order to run the machine
+    learning model.
+
+    Args:
+        csv_file: the file path to the csv file that contains the city
+        column.  
+    """
     pass
 
-def column_classification_check(data):
+def column_classification_check(csv_file):
+    """Checks the column types of each columns to ensure they are all int or 
+    an error will be thrown by the sklearn library while running the machine
+    learning model.
+
+    Args:
+        csv_file(str): the file path to the csv file that is used in the machine
+        learning model.
+    """
     pass
 
-def hoa_prep(data):
+def hoa_prep(csv_file):
     pass
 
-def lot_size_prep(data):
+def lot_size_prep(csv_file):
     pass
 
-def calc_price_per_sqft(data):
+def calc_price_per_sqft(csv_file):
     pass
 
 
