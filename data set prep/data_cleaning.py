@@ -97,6 +97,13 @@ def property_type_reclassification(csv_file):
         csv_file: the file path to the csv file that contains the property
         type values. 
     """
+    df = pd.read_csv(csv_file)
+    property_mapping = {
+        'Single Family Residential': 1,
+        'Townhouse': 2
+    }
+    df['PROPERTY TYPE'] = df['PROPERTY TYPE'].map(property_mapping)
+    df.to_csv(csv_file, index=False)
     pass
 
 def city_reclassification(data):
@@ -107,6 +114,11 @@ def city_reclassification(data):
         csv_file: the file path to the csv file that contains the city
         column.  
     """
+    df = pd.read_csv(csv_file)
+    unique_cities = df['CITY'].unique()
+    city_mapping = {city: index for index, city in enumerate(unique_cities)}
+    df['CITY'] = df['CITY'].map(city_mapping)
+    df.to_csv(csv_file, index=False)
     pass
 
 def column_classification_check(csv_file):
