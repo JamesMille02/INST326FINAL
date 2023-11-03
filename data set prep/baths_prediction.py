@@ -5,5 +5,8 @@ def compute_null_baths(csv_file):
     Args:
         csv_file(str): the file that is used for the overall machine learning 
             model which contains the baths column.
+    
+    Returns:
+        The altered data set 
     """
     pass

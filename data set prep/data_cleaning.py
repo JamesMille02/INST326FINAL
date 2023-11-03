@@ -9,22 +9,19 @@ def combine_csv_files(input_folder, output_file):
         input_folder: the path to a folder containing csv files
         output_file: the file path you want the csvs to be written into
     
-    Returned
+    Prints:
+        The amount of files saved into the name of the output folder
     """
     csv_files = [file for file in os.listdir(input_folder)]
     
-    if not csv_files:
-        print("No CSV files found in the input folder.")
-        return
-    
-    data_frames = []
+    joined_data = []
     
     for csv_file in csv_files:
-        file_path = os.path.join(input_folder, csv_file)
-        data = pd.read_csv(file_path)
-        data_frames.append(data)
+        file_join = os.path.join(input_folder, csv_file)
+        read_data = pd.read_csv(file_join)
+        joined_data.append(read_data)
     
-    combined_data = pd.concat(data_frames, ignore_index=True)
+    combined_data = pd.concat(joined_data, ignore_index=True)
     
     combined_data.to_csv(output_file, index=False)
     print(f"Combined {len(csv_files)} CSV files into {output_file}")
@@ -50,7 +47,11 @@ def is_null(csv_file):
     Args:
         file path to the csv file that you want to check the null values for the
         columns.
+
+    Prints:
+        The columns alongside the number of null values.
     """
+
     df = pd.read_csv(csv_file)
     null_values = df.isnull().sum()
 
@@ -66,7 +67,11 @@ def property_type_values(csv_file):
     Args:
         csv_file: the path to the csv file that contains the property type
         values.
+    
+    Prints:
+        The different property types and the count of each in the column
     """
+
     df = pd.read_csv(csv_file)
     property_type = df["PROPERTY TYPE"].value_counts()
     print(property_type)
@@ -79,10 +84,10 @@ def property_type_drop_rows(csv_file):
         csv_file: the file path to the csv file that contains the property
         type values.
     """
+
     df = pd.read_csv(csv_file)
     values_to_keep = df[df['PROPERTY TYPE'].isin(['Single Family Residential', 'Townhouse' ])]
     values_to_keep.to_csv(csv_file, index=False)
-    print(f"Filtered data saved to {csv_file}")
 
 def property_type_reclassification(csv_file):
     """Turns the two property type columns values into numeric values because the 

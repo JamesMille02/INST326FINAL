@@ -9,6 +9,9 @@ def compute_null_bed(csv_file):
     Args:
         csv_file(str): the file that is used for the overall machine learning 
             model which contains the bed column.
+    
+    Returns:
+        The altered data set
     """
     pass
 
