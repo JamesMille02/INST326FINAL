@@ -138,17 +138,64 @@ def column_classification_check(csv_file):
     Args:
         csv_file(str): the file path to the csv file that is used in the machine
         learning model.
+
+    Return:
+        A list of strings that represent the names of columns that are 
+            not int and if there are none it will print a statement representing
+            this fact.
+    """
+    pass
+
+def column_type_to_int(columns):
+    """changes all non int column types to in by accepting the list returned
+    from the column classification check method and changing those columns to 
+    integer representation. This is necessary for the machine learning model.
+
+    Args: 
+        columns(list): a list of column names that are not of int type
+
+    Output:
+        an updated data set where all specified columns are of type int or float
     """
     pass
 
 def hoa_prep(csv_file):
-    pass
+    """Changes all null values in the hoa column to zero.
 
-def lot_size_prep(csv_file):
+    Args:
+        csv_file(str): the name of the file that contains the hoa column
+
+    Output:
+        An updated csv file where all null values in the hoa column are 0
+    """
     pass
 
 def calc_price_per_sqft(csv_file):
+    """Calculates the price per a square feet of a house by dividing the sqft
+    by the price and adding this to the csv file.
+
+    Args:
+        csv_file(str): file name of the file that contains the price per a sqft
+            column.
+    
+    Output:
+        An updated csv file where the null values in the price per sqft column
+            are now the calculated values
+    """
     pass
+
+def lot_size_prep(csv_file):
+    """Changes all lot sizes that are null to the sqft value of the house
+
+    Args:
+        csv_file(str): file name of the file that contains the lot size column
+
+    Output:
+        An updated csv file where all null lot_sizes are updated to the sqft
+        of the house
+    """
+    pass
+
 
 
 

@@ -24,16 +24,37 @@ def heatmap(csv_file):
 
     Output:
         A heat map which will have numbers which shows the correlation between
-            the various columns. It also has 
+            the various columns. It also has utilizes color shades for 
+            visulization of the correlation between poitns.
     
     """
     pass
 
-def histogram(column):
+def histogram(column1, column2 ):
+    """a histogram to show establish the frequency of numeric values.
+
+    Args:
+        column1(str): a string representing a column which data will be used in 
+            the histogram.
+        column2(str): a string representing a column which data will be used in 
+            the histogram.
+
+    Output:
+        Histogram which contains plotted data points of a column.
+    
+    """
     pass
 
 def scatterplot(column1, column2):
-    pass
+    """shows a scatter plot to establish relationship between columns.
 
-def table(csv_file):
+    Args:
+        column1(str): a string representing a column which data will be used in 
+            the scatterplot.
+        column2(str): a string representing a column which data will be used in 
+            the scatterplot.
+    
+    Output:
+        A scatter plot which shows the correlation between rows.
+    """
     pass
