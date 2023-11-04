@@ -86,7 +86,8 @@ def property_type_drop_rows(csv_file):
     """
 
     df = pd.read_csv(csv_file)
-    values_to_keep = df[df['PROPERTY TYPE'].isin(['Single Family Residential', 'Townhouse' ])]
+    values_to_keep = df[df['PROPERTY TYPE'].isin(['Single Family Residential',
+                                                   'Townhouse' ])]
     values_to_keep.to_csv(csv_file, index=False)
 
 def property_type_reclassification(csv_file):
@@ -127,7 +128,7 @@ def city_reclassification(csv_file):
     city_mapping = {city: index for index, city in enumerate(unique_cities)}
     df['CITY'] = df['CITY'].map(city_mapping)
     df.to_csv(csv_file, index=False)
-    pass
+
 
 def column_classification_check(csv_file):
     """Checks the column types of each columns to ensure they are all int or 
