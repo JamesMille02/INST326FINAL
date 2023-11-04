@@ -96,6 +96,10 @@ def property_type_reclassification(csv_file):
     Args:
         csv_file: the file path to the csv file that contains the property
         type values. 
+
+    Output:
+        Edits the CSV file by changing single family residential values to 1
+            and townhouse to 2
     """
     df = pd.read_csv(csv_file)
     property_mapping = {
@@ -104,15 +108,19 @@ def property_type_reclassification(csv_file):
     }
     df['PROPERTY TYPE'] = df['PROPERTY TYPE'].map(property_mapping)
     df.to_csv(csv_file, index=False)
-    pass
 
-def city_reclassification(data):
+
+def city_reclassification(csv_file):
     """Turns the city strings into numeric values in order to run the machine
     learning model.
 
     Args:
         csv_file: the file path to the csv file that contains the city
         column.  
+
+    Output:
+        Gives each city a numerical index and changes the city name string
+            to the numerical index value
     """
     df = pd.read_csv(csv_file)
     unique_cities = df['CITY'].unique()
@@ -143,6 +151,7 @@ def calc_price_per_sqft(csv_file):
 
 
 
+
 #example call for drop_unwanted_colums
 input_file = 'feature_prediction.csv'
 #input_data = pd.read_csv(input_file)
@@ -151,7 +160,7 @@ input_file = 'feature_prediction.csv'
 #cleaned_data.to_csv(input_file, index=False)
 
 #example call for is_null
-is_null(input_file)
+#is_null(input_file)
 
 #example call for property_type_values
 #property_type_values(input_file)
@@ -159,3 +168,6 @@ is_null(input_file)
 #example call for property_type_reclassification
 #input_csv_file = 'original_data.csv'  # Replace with your input CSV file path
 #property_type_drop_rows(input_file)
+
+#city_reclassification(input_file)
+property_type_reclassification(input_file)
