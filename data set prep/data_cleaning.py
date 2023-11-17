@@ -129,35 +129,29 @@ def city_reclassification(csv_file):
     df['CITY'] = df['CITY'].map(city_mapping)
     df.to_csv(csv_file, index=False)
 
-
 def column_classification_check(csv_file):
-    """Checks the column types of each columns to ensure they are all int or 
-    an error will be thrown by the sklearn library while running the machine
-    learning model.
+    """Checks the column types of each column to ensure they are all int.
 
     Args:
-        csv_file(str): the file path to the csv file that is used in the machine
+        csv_file (str): the file path to the CSV file used in the machine
         learning model.
 
-    Return:
-        A list of strings that represent the names of columns that are 
-            not int and if there are none it will print a statement representing
-            this fact.
+    Returns:
+        list: A list of strings representing the names of columns that are
+        not of type int. If all columns are of type int, it prints a statement
+        indicating this.
     """
-    pass
+    df = pd.read_csv(csv_file)
 
-def column_type_to_int(columns):
-    """changes all non int column types to in by accepting the list returned
-    from the column classification check method and changing those columns to 
-    integer representation. This is necessary for the machine learning model.
+    non_numeric_columns = df.select_dtypes(exclude=['int', 'float']).columns.tolist()
 
-    Args: 
-        columns(list): a list of column names that are not of int type
+    if not non_numeric_columns:
+        print("All columns have numeric types (int or float).")
+    else:
+        print("Columns with non-numeric types:", non_numeric_columns)
+        
+    return non_numeric_columns
 
-    Output:
-        an updated data set where all specified columns are of type int or float
-    """
-    pass
 
 def hoa_prep(csv_file):
     """Changes all null values in the hoa column to zero.
@@ -168,7 +162,16 @@ def hoa_prep(csv_file):
     Output:
         An updated csv file where all null values in the hoa column are 0
     """
-    pass
+
+    df = pd.read_csv(csv_file)
+
+    df['HOA/MONTH'] = df['HOA/MONTH'].fillna(0)
+
+
+    df.to_csv(csv_file, index=False)
+
+    print(f"Updated CSV file saved to: {csv_file}")
+    return csv_file
 
 def calc_price_per_sqft(csv_file):
     """Calculates the price per a square feet of a house by dividing the sqft
@@ -182,7 +185,16 @@ def calc_price_per_sqft(csv_file):
         An updated csv file where the null values in the price per sqft column
             are now the calculated values
     """
-    pass
+    df = pd.read_csv(csv_file)
+
+    df['$/SQUARE FEET'] = df['PRICE'] / df['SQUARE FEET']
+    df['$/SQUARE FEET'].fillna(0, inplace=True)
+
+    df.to_csv(csv_file, index=False)
+
+    print(f"Updated CSV file saved to: {csv_file}")
+    return csv_file
+
 
 def lot_size_prep(csv_file):
     """Changes all lot sizes that are null to the sqft value of the house
@@ -194,7 +206,15 @@ def lot_size_prep(csv_file):
         An updated csv file where all null lot_sizes are updated to the sqft
         of the house
     """
-    pass
+    df = pd.read_csv(csv_file)
+
+    # Replace null values in the 'lot_size' column with the 'sqft' value
+    df['LOT SIZE'].fillna(df['SQUARE FEET'], inplace=True)
+
+    df.to_csv(csv_file, index=False)
+
+    print(f"Updated CSV file saved to: {csv_file}")
+    return csv_file
 
 
 
@@ -208,7 +228,7 @@ input_file = 'feature_prediction.csv'
 #cleaned_data.to_csv(input_file, index=False)
 
 #example call for is_null
-#is_null(input_file)
+is_null(input_file)
 
 #example call for property_type_values
 #property_type_values(input_file)
@@ -218,4 +238,12 @@ input_file = 'feature_prediction.csv'
 #property_type_drop_rows(input_file)
 
 #city_reclassification(input_file)
-property_type_reclassification(input_file)
+#property_type_reclassification(input_file)
+
+#column_classification_check(input_file)
+
+#hoa_prep(input_file)
+
+#calc_price_per_sqft(input_file)
+
+#lot_size_prep(input_file)
