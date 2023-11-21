@@ -12,17 +12,25 @@ def combine_csv_files(input_folder, output_file):
     Prints:
         The amount of files saved into the name of the output folder
     """
+    #gets the csv files in the folder
     csv_files = [file for file in os.listdir(input_folder)]
     
+    #empty list created
     joined_data = []
     
+    #searches for all files in the folder
     for csv_file in csv_files:
+        #joins the folder  and the csv_file
         file_join = os.path.join(input_folder, csv_file)
+        #reads the files in the folder
         read_data = pd.read_csv(file_join)
+        #appends the read data in the joined data
         joined_data.append(read_data)
     
+    #concats this data together in a dataframe
     combined_data = pd.concat(joined_data, ignore_index=True)
     
+    #combines to a csv
     combined_data.to_csv(output_file, index=False)
     print(f"Combined {len(csv_files)} CSV files into {output_file}")
 
@@ -36,6 +44,7 @@ def drop_unwanted_columns(csv_file, columns_to_drop):
     Returns:
         returns the altered data set without the dropped columns
     """
+    #drops all files that are entered given
     data = csv_file.drop(columns=columns_to_drop, errors='ignore')
     return data
 
@@ -52,12 +61,14 @@ def is_null(csv_file):
         The columns alongside the number of null values.
     """
 
+    #reads the csv_file
     df = pd.read_csv(csv_file)
+    #gets the sum of null values in a column
     null_values = df.isnull().sum()
 
+    #checks if over 1 null
     if null_values.sum() > 0:
         print(f"Null value counts per column:\n{null_values}")
-  
     else:
         print("The CSV file does not contain any null values.")
 
@@ -72,8 +83,11 @@ def property_type_values(csv_file):
         The different property types and the count of each in the column
     """
 
+    #reads the csv_file
     df = pd.read_csv(csv_file)
+    #counts total property types 
     property_type = df["PROPERTY TYPE"].value_counts()
+    #prints the type and the count
     print(property_type)
 
 def property_type_drop_rows(csv_file):
@@ -85,9 +99,12 @@ def property_type_drop_rows(csv_file):
         type values.
     """
 
+    #reads the csv_file
     df = pd.read_csv(csv_file)
+    #specifies the columns we want to keep
     values_to_keep = df[df['PROPERTY TYPE'].isin(['Single Family Residential',
                                                    'Townhouse' ])]
+    #saves to csv_file
     values_to_keep.to_csv(csv_file, index=False)
 
 def property_type_reclassification(csv_file):
@@ -102,12 +119,17 @@ def property_type_reclassification(csv_file):
         Edits the CSV file by changing single family residential values to 1
             and townhouse to 2
     """
+
+    #reads csv_file
     df = pd.read_csv(csv_file)
+    #sets the property types to numeric values
     property_mapping = {
         'Single Family Residential': 1,
         'Townhouse': 2
     }
+    #changes the property types to the corresponding number
     df['PROPERTY TYPE'] = df['PROPERTY TYPE'].map(property_mapping)
+    #saves it to the csv
     df.to_csv(csv_file, index=False)
 
 
@@ -123,10 +145,17 @@ def city_reclassification(csv_file):
         Gives each city a numerical index and changes the city name string
             to the numerical index value
     """
+
+    #reads the csv_file
     df = pd.read_csv(csv_file)
+    #finds all cities
     unique_cities = df['CITY'].unique()
+    #goes through each individual city in the unique cities array and saving 
+    #the number it comes up as in the array if it unique
     city_mapping = {city: index for index, city in enumerate(unique_cities)}
+    #changes the city to the number corresponding
     df['CITY'] = df['CITY'].map(city_mapping)
+    #saves to the csv file
     df.to_csv(csv_file, index=False)
 
 def column_classification_check(csv_file):
@@ -141,9 +170,13 @@ def column_classification_check(csv_file):
         not of type int. If all columns are of type int, it prints a statement
         indicating this.
     """
+
+    #reads csv_file
     df = pd.read_csv(csv_file)
 
-    non_numeric_columns = df.select_dtypes(exclude=['int', 'float']).columns.tolist()
+    #selects all types of columns that are not int or float type
+    non_numeric_columns = df.select_dtypes(exclude=['int',
+                                                     'float']).columns.tolist()
 
     if not non_numeric_columns:
         print("All columns have numeric types (int or float).")
@@ -163,15 +196,15 @@ def hoa_prep(csv_file):
         An updated csv file where all null values in the hoa column are 0
     """
 
+    #reads the cssv
     df = pd.read_csv(csv_file)
 
+    #fills the HOA/MONTH with a 0 if it is NA
     df['HOA/MONTH'] = df['HOA/MONTH'].fillna(0)
 
-
+    #saves tot the csv
     df.to_csv(csv_file, index=False)
 
-    print(f"Updated CSV file saved to: {csv_file}")
-    return csv_file
 
 def calc_price_per_sqft(csv_file):
     """Calculates the price per a square feet of a house by dividing the sqft
@@ -185,15 +218,17 @@ def calc_price_per_sqft(csv_file):
         An updated csv file where the null values in the price per sqft column
             are now the calculated values
     """
+    
+    #reads the csv file
     df = pd.read_csv(csv_file)
 
+    #price per a square foot
     df['$/SQUARE FEET'] = df['PRICE'] / df['SQUARE FEET']
+    #replace null values with this value
     df['$/SQUARE FEET'].fillna(0, inplace=True)
 
+    #saves to the csv
     df.to_csv(csv_file, index=False)
-
-    print(f"Updated CSV file saved to: {csv_file}")
-    return csv_file
 
 
 def lot_size_prep(csv_file):
@@ -206,18 +241,39 @@ def lot_size_prep(csv_file):
         An updated csv file where all null lot_sizes are updated to the sqft
         of the house
     """
+
+    #reads the csv_file
     df = pd.read_csv(csv_file)
 
-    # Replace null values in the 'lot_size' column with the 'sqft' value
+    #replace null values in the 'lot_size' column with the 'sqft' value
     df['LOT SIZE'].fillna(df['SQUARE FEET'], inplace=True)
 
+    #saves to the csv_file
     df.to_csv(csv_file, index=False)
 
-    print(f"Updated CSV file saved to: {csv_file}")
-    return csv_file
 
+def drop_null_rows(csv_file):
+    """Drops the rows with null values in the BATHS, SQUARE FEET, and LOT SIZE
+    columns.
 
+    Args:
+        csv_file(str): file name of the file that contains the lot size column
 
+    Output:
+        An updated csv value where the rows with missing values rows are not
+            present. Drops a total of 277 rows.
+    """
+    #load the CSV file into a Pandas DataFrame
+    df = pd.read_csv(csv_file)
+
+    #columns with missing values
+    columns_with_missing_values = ['BATHS', 'SQUARE FEET', 'LOT SIZE']
+
+    #drop rows with null values in specified columns
+    df.dropna(subset=columns_with_missing_values, inplace=True)
+
+    #save the updated DataFrame to a new CSV file
+    df.to_csv('feature_prediction.csv', index=False)
 
 
 #example call for drop_unwanted_colums
@@ -247,3 +303,5 @@ is_null(input_file)
 #calc_price_per_sqft(input_file)
 
 #lot_size_prep(input_file)
+
+drop_null_rows(input_file)
