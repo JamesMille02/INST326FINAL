@@ -1,17 +1,45 @@
 import pandas as pd
-from catboost import CatBoostClassifier
+from catboost import CatBoostRegressor
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
 
-def cat_boost_predicton(csv_file):
-    """Predicts the prices of house utilizing the catboosts CatBootClassifier 
-    machine learning algorithm by splitting into test and train values and 
-    getting the differnce in predicted and actual values.
+def cat_boost_prediction(csv_file):
+    """Predicts the prices of houses using the CatBoostRegressor machine learning 
+    algorithm by splitting into test and train values and getting the difference 
+    in predicted and actual values.
 
     Args:
-        csv_file(str): the file that contains the housing data set in csv file
+        csv_file(str): the file that contains the housing dataset in CSV file
             format.
 
     Returns:
-        A variable which contains the mean absolute error for 
-            comparing the models accuracy.
+        A variable which contains the mean absolute error for comparing the 
+        model's accuracy.
     """
+    #load the dataset into a Pandas DataFrame
+    df = pd.read_csv(csv_file)
+
+    #specify features (X) and target variable (y)
+    features = df.drop('PRICE', axis=1)  
+    target = df['PRICE']
+
+    # Split the dataset into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(features, target, 
+                                                        test_size=0.2, 
+                                                        random_state=42)
+
+    #create and train the CatBoostRegressor model
+    model = CatBoostRegressor()
+    #fits the train data to the model
+    model.fit(X_train, y_train)
+
+    #make predictions on the test set
+    y_pred = model.predict(X_test)
+
+    #calculates the mean absolute error
+    mean_absolute_error_value = mean_absolute_error(y_test, y_pred)
+
+    return mean_absolute_error_value
+
+mean_absolute_error_value = cat_boost_prediction("feature_prediction.csv")
+print(f"Mean Absolute Error: {mean_absolute_error_value}")
