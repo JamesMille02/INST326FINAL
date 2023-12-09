@@ -20,8 +20,10 @@ def linear_regression_model(csv_file):
     #loads the dataset into a Pandas DataFrame
     df = pd.read_csv(csv_file)
 
-    #specifies the features (X) and target variable (y)
-    features = df.drop('PRICE', axis=1)  
+    #specifies the features X
+    features = df.drop('PRICE', axis=1)
+    #sets the target of the machine learning to PRICE will be what the model
+    #predicts
     target = df['PRICE']
 
     #standardizes the features
@@ -30,8 +32,8 @@ def linear_regression_model(csv_file):
 
     #splits the dataset into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(features_standardized, 
-                                                        target, test_size=0.2, 
-                                                        random_state=42)
+                                                        target, test_size=0.1, 
+                                                        random_state=1)
 
     #creates and train the Ridge regression model
     model = Ridge(alpha=1.0)  
@@ -45,6 +47,6 @@ def linear_regression_model(csv_file):
 
     return mean_absolute_error_value
 
-
+#call and print the mean absolute error value
 mean_absolute_error_value = linear_regression_model("feature_prediction.csv")
 print(f"Mean Absolute Error: {mean_absolute_error_value}")

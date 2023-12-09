@@ -19,15 +19,17 @@ def cat_boost_prediction(csv_file):
     #load the dataset into a Pandas DataFrame
     df = pd.read_csv(csv_file)
 
-    #specify features (X) and target variable (y)
-    features = df.drop('PRICE', axis=1)  
+    #specify features X
+    features = df.drop('PRICE', axis=1) 
+    #sets the target of the machine learning to PRICE will be what the model
+    #predicts 
     target = df['PRICE']
 
-    # Split the dataset into training and testing sets
+    #Split the dataset into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(features, target, 
-                                                        test_size=0.2, 
-                                                        random_state=42)
-
+                                                        test_size=0.000002, 
+                                                        random_state=2)
+    
     #create and train the CatBoostRegressor model
     model = CatBoostRegressor()
     #fits the train data to the model
@@ -41,5 +43,6 @@ def cat_boost_prediction(csv_file):
 
     return mean_absolute_error_value
 
+#call and print the mean absolute error value
 mean_absolute_error_value = cat_boost_prediction("feature_prediction.csv")
 print(f"Mean Absolute Error: {mean_absolute_error_value}")

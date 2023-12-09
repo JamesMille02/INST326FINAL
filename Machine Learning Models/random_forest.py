@@ -20,21 +20,23 @@ def random_forest_regression_model(csv_file):
     #load the dataset into a Pandas DataFrame
     df = pd.read_csv(csv_file)
 
-    #specifies features (X) and target variable (y)
+    #specifies features X
     features = df.drop('PRICE', axis=1)
+    #sets the target of the machine learning to PRICE will be what the model
+    #predicts 
     target = df['PRICE']
 
-    # Standardize the features
+    #standardize the features
     scaler = StandardScaler()
     features_standardized = scaler.fit_transform(features)
 
-    # Split the dataset into training and testing sets
+    #split the dataset into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(features_standardized, 
-                                                        target, test_size=0.2, 
-                                                        random_state=42)
+                                                        target, test_size=0.1, 
+                                                        random_state=1)
 
     #create and train the Random Forest Regressor model
-    model = RandomForestRegressor(n_estimators=100, random_state=42)
+    model = RandomForestRegressor(random_state=1)
     #fits the train data on the model
     model.fit(X_train, y_train)
 
@@ -46,5 +48,6 @@ def random_forest_regression_model(csv_file):
 
     return mean_absolute_error_value
 
+#call and print the mean absolute error value
 mean_absolute_error_value = random_forest_regression_model("feature_prediction.csv")
 print(f"Mean Absolute Error: {mean_absolute_error_value}")
