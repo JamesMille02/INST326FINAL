@@ -60,6 +60,7 @@ def compute_null_bed(csv_file):
         #saves it to the csv
         df.to_csv(csv_file, index=False)
 
+    #if it fails print an error has occured.
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
