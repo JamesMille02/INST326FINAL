@@ -1,72 +1,56 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import matplotlib.ticker as ticker
+import numpy as np
+
 def graph(data, column1, column2):
-    """Creates a graph by using two columns in order to compare values to 
-    establish a relationship between columns
-    
-    Args:
-        data (DataFrame): A pandas DataFrame containing the data.
-        column1(str): a string representing a column which data will be used in 
-            the graph.
-        column2(str): a string representing a column which data will be used in 
-            the graph.
-    
-    Output:
-        A graph where the x and y are two values and data points are
-            plotted accross to view linear regression.
-    """
-    plt.plot(data[column1], data[column2])
+    plt.figure(figsize=(10,5))
+    plt.scatter(data[column1], data[column2], alpha=0.5)
     plt.xlabel(column1)
     plt.ylabel(column2)
-    plt.title(f"Line Graph of {column1} vs {column2}")
+    plt.title(f"Scatter Plot of {column1} vs {column2}")
+
+    formatter = ticker.StrMethodFormatter('{x:,.0f}')
+    plt.gca().xaxis.set_major_formatter(formatter)
+
+    plt.xticks(rotation=45)
+    plt.tight_layout()
     plt.show()
+
+def heatmap(csv_file, columns):
+    selected_data = data[columns]
+    correlation_matrix = selected_data.corr()
     
-    pass
-
-def heatmap(csv_file):
-    """Creates a heatmap to visualize the correlation between columns in a dataset.
-
-    Args:
-        csv_file(str): string representing the file name which contains the 
-            file of data.
-
-    Output:
-        Displays a heatmap with color shades representing the correlation strengths between columns.
-    
-    """
-    data = pd.read_csv(csv_file)
-    correlation_matrix = data.corr()
-    sns.heatmap(correlation_matrix, annot=True)
-    plt.title("Heatmap of Correlations")
+    plt.figure(figsize=(12,8))
+    sns.heatmap(correlation_matrix, annot=True, cmap='viridis')
+    plt.title("Heatmap of Correlations for Selected Variables")
+    plt.xticks(rotation=45)
+    plt.yticks(rotation=45)
+    plt.tight_layout()
     plt.show()
+
+data = pd.read_csv('final_data_set.csv')
+
+columns_to_include = ['PRICE', 'BEDS', 'BATHS', 'SQUARE FEET', 'LOT SIZE']
+
+def histogram(data, column, max_value):
+    filtered_data = data[data[column] <= max_value]
     
-    pass
+    plt.figure(figsize=(10,5))
+    sns.histplot(filtered_data[column], bins=range(0, max_value+1), kde=False)
+    plt.xlabel(column)
+    plt.ylabel('Frequency')
+    plt.title(f"Histogram of {column} up to {max_value}")
+    plt.xticks(range(0, max_value+1))
+    plt.tight_layout()
+    plt.show()
 
-def histogram(data, column1, column2 ):
-    """a histogram to show establish the frequency of numeric values.
+file_path = 'final_data_set.csv'
+data = pd.read_csv(file_path)
 
-    Args:
-        data (DataFrame): A pandas DataFrame containing the data.
-        column1(str): a string representing a column which data will be used in 
-            the histogram.
-        column2(str): a string representing a column which data will be used in 
-            the histogram.
+graph(data, 'PRICE', 'SQUARE FEET')
+histogram(data, 'BEDS', 10)
+heatmap('final_data_set.csv', columns_to_include)
 
-    Output:
-        Histogram which contains plotted data points of a column.
-    
-    """
-    pass
-
-def scatterplot(data, column1, column2):
-    """shows a scatter plot to establish relationship between columns.
-
-    Args:
-        data (DataFrame): A pandas DataFrame containing the data.
-        column1(str): a string representing a column which data will be used in 
-            the scatterplot.
-        column2(str): a string representing a column which data will be used in 
-            the scatterplot.
-    
-    Output:
-        A scatter plot which shows the correlation between rows.
-    """
-    pass
+pass
