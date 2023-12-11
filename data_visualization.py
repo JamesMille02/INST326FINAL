@@ -5,6 +5,14 @@ import matplotlib.ticker as ticker
 import numpy as np
 
 def graph(data, column1, column2):
+    """
+    Creates and displays a scatter plot for two specified columns from the given DataFrame.
+
+    Parameters:
+    data (DataFrame): The pandas DataFrame containing the data.
+    column1 (str): The name of the first column to be plotted on the x-axis.
+    column2 (str): The name of the second column to be plotted on the y-axis.
+    """
     plt.figure(figsize=(10,5))
     plt.scatter(data[column1], data[column2], alpha=0.5)
     plt.xlabel(column1)
@@ -19,6 +27,13 @@ def graph(data, column1, column2):
     plt.show()
 
 def heatmap(csv_file, columns):
+    """
+    Reads a CSV file, selects specified columns, and creates a heatmap of their correlations.
+
+    Parameters:
+    csv_file (str): The file path to the CSV file.
+    columns (list): List of columns to include in the correlation heatmap.
+    """
     data = pd.read_csv(csv_file)
     selected_data = data[columns]
     correlation_matrix = selected_data.corr()
@@ -36,6 +51,14 @@ data = pd.read_csv('final_data_set.csv')
 columns_to_include = ['PRICE', 'BEDS', 'BATHS', 'SQUARE FEET', 'LOT SIZE']
 
 def histogram(data, column, max_value):
+    """
+    Creates and displays a histogram for a specified column in the DataFrame.
+
+    Parameters:
+    data (DataFrame): The pandas DataFrame containing the data.
+    column (str): The name of the column to create a histogram for.
+    max_value (int): The maximum value for the histogram range.
+    """
     filtered_data = data[data[column] <= max_value]
     
     plt.figure(figsize=(10,5))
