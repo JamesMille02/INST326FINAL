@@ -19,6 +19,7 @@ def graph(data, column1, column2):
     plt.show()
 
 def heatmap(csv_file, columns):
+    data = pd.read_csv(csv_file)
     selected_data = data[columns]
     correlation_matrix = selected_data.corr()
     
