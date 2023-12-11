@@ -21,7 +21,7 @@ def cat_boost_prediction(csv_file):
     #reads the csv_file and saves it in dataframe
     model_data = pd.read_csv(csv_file)
     #sets the features to the other columns that arent price
-    features = model_data.drop('PRICE', axis=1)
+    features = model_data.drop(['PRICE', 'LOT SIZE', '$/SQUARE FEET'], axis=1)
     #sets the target to price
     target = model_data['PRICE']
     
@@ -53,8 +53,6 @@ def predict_price():
         feature6 = float(entry_feature6.get())
         feature7 = float(entry_feature7.get())
         feature8 = float(entry_feature8.get())
-        feature9 = float(entry_feature9.get())
-        feature10 = float(entry_feature10.get())
         feature11 = float(entry_feature11.get())
         feature12 = float(entry_feature12.get())
         feature13 = float(entry_feature13.get())
@@ -90,8 +88,6 @@ def predict_price():
             'BEDS': [feature6],
             'BATHS': [feature7],
             'SQUARE FEET': [feature8],
-            'LOT SIZE': [feature9],
-            '$/SQUARE FEET': [feature10],
             'LATITUDE': [feature11],
             'LONGITUDE': [feature12],
             'HOA/MONTH': [feature13],
@@ -140,8 +136,8 @@ def predict_price():
             rounded_price = round(predicted_price / 1000) * 1000
             # shows a message on the gui with the predicted price range
             messagebox.showinfo('Predicted Price', 
-                    f'Predicted Price: ${(rounded_price + 10000)} to '
-                    f'${(rounded_price - 10000)}')
+                    f'Predicted Price: ${(rounded_price + 2000)} to '
+                    f'${(rounded_price - 20000)}')
 
     #if there is an error throughs the message
     except ValueError:
@@ -218,30 +214,20 @@ label_feature8.grid(row=8, column=0, padx=10, pady=10)
 entry_feature8 = tk.Entry(app)
 entry_feature8.grid(row=8, column=1, padx=10, pady=10)
 
-label_feature9 = tk.Label(app, text='Lot Size:')
-label_feature9.grid(row=9, column=0, padx=10, pady=10)
-entry_feature9 = tk.Entry(app)
-entry_feature9.grid(row=9, column=1, padx=10, pady=10)
-
-label_feature10 = tk.Label(app, text='Price per a Squate Foot:')
-label_feature10.grid(row=10, column=0, padx=10, pady=10)
-entry_feature10 = tk.Entry(app)
-entry_feature10.grid(row=10, column=1, padx=10, pady=10)
-
 label_feature11 = tk.Label(app, text='Latitude:')
-label_feature11.grid(row=11, column=0, padx=10, pady=10)
+label_feature11.grid(row=12, column=0, padx=10, pady=10)
 entry_feature11 = tk.Entry(app)
-entry_feature11.grid(row=11, column=1, padx=10, pady=10)
+entry_feature11.grid(row=12, column=1, padx=10, pady=10)
 
 label_feature12 = tk.Label(app, text='Longitude:')
-label_feature12.grid(row=12, column=0, padx=10, pady=10)
+label_feature12.grid(row=13, column=0, padx=10, pady=10)
 entry_feature12 = tk.Entry(app)
-entry_feature12.grid(row=12, column=1, padx=10, pady=10)
+entry_feature12.grid(row=13, column=1, padx=10, pady=10)
 
 label_feature13 = tk.Label(app, text='HOA Cost per a Month:')
-label_feature13.grid(row=13, column=0, padx=10, pady=10)
+label_feature13.grid(row=14, column=0, padx=10, pady=10)
 entry_feature13 = tk.Entry(app)
-entry_feature13.grid(row=13, column=1, padx=10, pady=10)
+entry_feature13.grid(row=14, column=1, padx=10, pady=10)
 
 #creates button which predicts the price
 catboost_button = tk.Button(app, text='House Price Prediction', 
