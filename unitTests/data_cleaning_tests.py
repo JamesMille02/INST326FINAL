@@ -4,6 +4,8 @@ import os
 import sys
 from pandas.testing import assert_frame_equal
 from contextlib import redirect_stdout
+from contextlib import contextmanager
+from io import StringIO
 from data_set_prep.data_cleaning import (combine_csv_files, 
                                         drop_unwanted_columns, is_null,
                                         property_type_values, 
@@ -13,8 +15,7 @@ from data_set_prep.data_cleaning import (combine_csv_files,
                                         column_classification_check, hoa_prep,
                                         calc_price_per_sqft, lot_size_prep, 
                                         drop_null_rows)
-from contextlib import contextmanager
-from io import StringIO
+
 
 @contextmanager
 def captured_output():
