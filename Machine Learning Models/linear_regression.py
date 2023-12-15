@@ -17,7 +17,6 @@ def linear_regression_model(csv_file):
     """
     #load the dataset into a Pandas DataFrame
     df = pd.read_csv(csv_file)
-
     #specify features X
     features = df.drop('PRICE', axis=1)
     #sets the target of the machine learning to PRICE will be what the model
@@ -33,10 +32,8 @@ def linear_regression_model(csv_file):
     model = LinearRegression()
     #splits the train data to the model
     model.fit(X_train, y_train)
-
     #make predictions on the test set
     y_pred = model.predict(X_test)
-
     #calculates the mean absolute error
     mean_absolute_error_value = mean_absolute_error(y_test, y_pred)
 
