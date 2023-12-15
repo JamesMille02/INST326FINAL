@@ -33,7 +33,6 @@ def cat_boost_prediction(csv_file):
     model = CatBoostRegressor()
     #fits the model to it
     model.fit(X_train, y_train)
-    
     return model
 
 def predict_price():
@@ -77,7 +76,6 @@ def predict_price():
             'Wheaton': 42, 'Ashton': 43, 'Burtonsville': 44, 'Springdale': 45, 
             'Waldorf': 46, 'Accokeek': 47, 'White Plains': 48, 
             'Other': 49}.get(feature2, 0)
-
 
         #create a DataFrame with user input
         user_input = pd.DataFrame({
