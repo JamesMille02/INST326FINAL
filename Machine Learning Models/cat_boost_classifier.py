@@ -20,7 +20,7 @@ def cat_boost_prediction(csv_file):
     df = pd.read_csv(csv_file)
 
     #specify features X
-    features = df.drop(['PRICE', 'LOT SIZE', '$/SQUARE FEET'], axis=1) 
+    features = df.drop(['PRICE'], axis=1) 
     #sets the target of the machine learning to PRICE will be what the model
     #predicts 
     target = df['PRICE']
