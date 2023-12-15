@@ -279,14 +279,19 @@ def drop_null_rows(csv_file):
         An updated csv value where the rows with missing values rows are not
             present. Drops a total of 277 rows.
     """
-    #load the CSV file into a Pandas DataFrame
-    df = pd.read_csv(csv_file)
-    #columns with missing values
-    columns_with_missing_values = ['BATHS', 'SQUARE FEET', 'LOT SIZE']
-    #drop rows with null values in specified columns
-    df.dropna(subset=columns_with_missing_values, inplace=True)
-    #save the updated DataFrame to a new CSV file
-    df.to_csv('feature_prediction.csv', index=False)
+    try:
+        # Load the CSV file into a DataFrame
+        df = pd.read_csv(csv_file)
+
+        # Drop rows with any null values
+        df = df.dropna()
+
+        # Save the modified DataFrame back to the CSV file
+        df.to_csv(csv_file, index=False)
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
 
 
 #example calls
