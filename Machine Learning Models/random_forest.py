@@ -19,7 +19,6 @@ def random_forest_regression_model(csv_file):
     """
     #load the dataset into a Pandas DataFrame
     df = pd.read_csv(csv_file)
-
     #specifies features X
     features = df.drop('PRICE', axis=1)
     #sets the target of the machine learning to PRICE will be what the model
@@ -39,10 +38,8 @@ def random_forest_regression_model(csv_file):
     model = RandomForestRegressor(random_state=1)
     #fits the train data on the model
     model.fit(X_train, y_train)
-
     #makes predictions on the test set
     y_pred = model.predict(X_test)
-
     #calculates the mean absolute error
     mean_absolute_error_value = mean_absolute_error(y_test, y_pred)
 
