@@ -50,7 +50,7 @@ class TestComputeNullBed(unittest.TestCase):
         """determines if lists are equal lengths and the numbers are the same
         in the list.
         
-        ARGS:
+        Args:
             list1(list): contains data of beds
             list2(list): contains list of beds
         """

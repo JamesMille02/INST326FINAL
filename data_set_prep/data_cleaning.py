@@ -267,7 +267,6 @@ def lot_size_prep(csv_file):
     #saves to the csv_file
     df.to_csv(csv_file, index=False)
 
-
 def drop_null_rows(csv_file):
     """Drops the rows with null values in the BATHS, SQUARE FEET, and LOT SIZE
     columns.

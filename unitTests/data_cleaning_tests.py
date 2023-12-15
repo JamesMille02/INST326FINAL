@@ -6,11 +6,14 @@ from pandas.testing import assert_frame_equal
 from contextlib import redirect_stdout
 from contextlib import contextmanager
 from io import StringIO
+import tempfile
+from pandas.testing import assert_frame_equal
 from data_set_prep.data_cleaning import (combine_csv_files, 
                                         drop_unwanted_columns, is_null,
                                         property_type_values, 
                                         find_unique_cities,
-                                        property_type_drop_rows, 
+                                        property_type_drop_rows,
+                                        property_type_reclassification, 
                                         city_reclassification, 
                                         column_classification_check, hoa_prep,
                                         calc_price_per_sqft, lot_size_prep, 
@@ -178,6 +181,44 @@ class TestCSVFunctions(unittest.TestCase):
         property_type_values_output = out.getvalue().strip()
         self.assertIn(expected_output, property_type_values_output)
 
+    def test_property_type_reclassification(self):
+        """makes the property_type_reclassification method is properly changing
+        property types to the correct numeric values.
+        """
+        #creates temp csv
+        test_csv = tempfile.NamedTemporaryFile(delete=False, suffix=".csv")
+
+        #created data
+        data = {
+            'PROPERTY TYPE': ['Single Family Residential', 'Townhouse', 
+                              'Single Family Residential'],
+            'Another Column': [1, 2, 3],
+        }
+
+        #creates a data frame fram with the data
+        test_data = pd.DataFrame(data)
+        #saves the data frame to the temp file
+        test_data.to_csv(test_csv.name, index=False)
+
+        #calls the property_type_reclassification on the temp file
+        property_type_reclassification(test_csv.name)
+
+        #reads the contents
+        modified_data = pd.read_csv(test_csv.name)
+
+        #expected mapping for the data
+        expected_mapping = {
+            'Single Family Residential': 1,
+            'Townhouse': 2
+        }
+
+        #assigns the property types values for the expected results
+        expected_values = test_data['PROPERTY TYPE'].map(expected_mapping)
+
+        #determines if the values are equal
+        pd.testing.assert_series_equal(modified_data['PROPERTY TYPE'], 
+                                       expected_values)
+
     def test_find_unique_cities(self):
         """tests the find_unique_cities method in order to determine it can
         find each individual city.
@@ -293,6 +334,76 @@ class TestCSVFunctions(unittest.TestCase):
         #is empty
         self.assertIn(expected_output, column_classification_output)
         self.assertEqual(non_numeric_columns, [])
+    
+    def test_calc_price_per_sqft(self):
+        """checks if the calc_price_per_sqft method correctly calculates the
+        price per square foot and handles null values.
+        """
+
+        #created test data
+        test_data = pd.DataFrame({
+            'PRICE': [200000, 300000, 250000],
+            'SQUARE FEET': [1500, 1800, 2000],
+        })
+
+        #saves temp data in a csv
+        test_data.to_csv(os.path.join(self.temp_dir, 
+                                      'test_calc_price_per_sqft.csv'), 
+                                      index=False)
+
+        #gets the file path
+        file_path = os.path.join(self.temp_dir, 'test_calc_price_per_sqft.csv')
+
+        #calls the cal_price_per_sqft function on the temp file
+        calc_price_per_sqft(file_path)
+
+        #reads the temp  file
+        calc_price_per_sqft_output = pd.read_csv(file_path)
+
+        #calculates the price per square foot
+        expected_values = test_data['PRICE'] / test_data['SQUARE FEET']
+        expected_values.fillna(0, inplace=True)
+
+        #sets the name of the expected series to match the modified series 
+        expected_values.name = '$/SQUARE FEET'
+
+        #checks if the calc_price_per_sqft has the correct output
+        pd.testing.assert_series_equal(calc_price_per_sqft_output
+                                       ['$/SQUARE FEET'], expected_values)
+
+    def test_lot_size_prep(self):
+        """tests if the lot_size_prep method correctly replaces null lot sizes
+        with the square footage of the house.
+        """
+
+        #created test data
+        lot_size_data = pd.DataFrame({
+            'SQUARE FEET': [1500, 1800, 2000],
+            'LOT SIZE': [3000, None, 2500],
+        })
+
+        #saves data in csv
+        lot_size_data.to_csv(os.path.join(self.temp_dir, 
+                                      'test_lot_size_prep.csv'), index=False)
+
+        #saves file path of the test CSV
+        file_path = os.path.join(self.temp_dir, 'test_lot_size_prep.csv')
+
+        #calls the lot_size_prep function on the temp file
+        lot_size_prep(file_path)
+
+        #reads the data in the CSV
+        calc_price_per_sqft_file = pd.read_csv(file_path)
+
+        #expected data with null lot size replaced by square footage
+        expected_data = pd.DataFrame({
+            'SQUARE FEET': [1500, 1800, 2000],
+            'LOT SIZE': [3000, 1800, 2500],  
+        })
+
+        #check if the lot_size_prep gives the right output
+        assert_frame_equal(calc_price_per_sqft_file, expected_data, 
+                           check_dtype=False)
 
     def test_hoa_prep(self):
         """tests if the hoa price assigns 0s to the none values and no other
