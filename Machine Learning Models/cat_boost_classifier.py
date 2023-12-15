@@ -34,10 +34,8 @@ def cat_boost_prediction(csv_file):
     model = CatBoostRegressor()
     #fits the train data to the model
     model.fit(X_train, y_train)
-
     #make predictions on the test set
     y_pred = model.predict(X_test)
-
     #calculates the mean absolute error
     mean_absolute_error_value = mean_absolute_error(y_test, y_pred)
 
