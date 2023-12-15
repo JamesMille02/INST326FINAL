@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import unittest.mock
 
-from data_set_prep.beds_prediction import compute_null_bed  # Replace 'your_module' with the actual name of your module or script
+from data_set_prep.beds_prediction import compute_null_bed
 
 class TestComputeNullBed(unittest.TestCase):
     def setUp(self):
