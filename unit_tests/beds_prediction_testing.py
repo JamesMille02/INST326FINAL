@@ -1,7 +1,6 @@
 import unittest
 import pandas as pd
 import os
-import unittest.mock
 
 from data_set_prep.beds_prediction import compute_null_bed
 
