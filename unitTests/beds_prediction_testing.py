@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import unittest.mock
 
-from data_set_prep.beds_prediction import compute_null_bed  
+from data_set_prep.beds_prediction import compute_null_bed
 
 class TestComputeNullBed(unittest.TestCase):
     def setUp(self):
@@ -34,10 +34,8 @@ class TestComputeNullBed(unittest.TestCase):
         compute_null_bed(self.test_null_bed_file)
         #reads the file and saves the contents
         read_file = pd.read_csv(self.test_null_bed_file)
-        
         #ensures there are no null values
         self.assertFalse(read_file['BEDS'].isnull().any())
-        
         #checks if the values are correct
         self.assertListAlmostEqual(read_file['BEDS'].tolist(), 
                                    [2, 3, 4, 3, 2], delta=0.1)
