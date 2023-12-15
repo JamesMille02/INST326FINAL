@@ -28,7 +28,7 @@ def cat_boost_prediction(csv_file):
     #Split the dataset into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(features, target, 
                                                         test_size=0.000002, 
-                                                        random_state=2)
+                                                        random_state=3)
     
     #create and train the CatBoostRegressor model
     model = CatBoostRegressor()

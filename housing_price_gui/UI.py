@@ -21,13 +21,13 @@ def cat_boost_prediction(csv_file):
     #reads the csv_file and saves it in dataframe
     model_data = pd.read_csv(csv_file)
     #sets the features to the other columns that arent price
-    features = model_data.drop(['PRICE', 'LOT SIZE', '$/SQUARE FEET'], axis=1)
+    features = model_data.drop(['PRICE'], axis=1)
     #sets the target to price
     target = model_data['PRICE']
     
     #split the dataset into training
     X_train, _, y_train, _ = train_test_split(features, target, 
-                                              test_size=.000002, random_state=1)
+                                              test_size=.000002, random_state=3)
     
     #sets the model the catboost regressor
     model = CatBoostRegressor()
@@ -52,6 +52,8 @@ def predict_price():
         feature6 = float(entry_feature6.get())
         feature7 = float(entry_feature7.get())
         feature8 = float(entry_feature8.get())
+        feature9 = float(entry_feature9.get())
+        feature10 = float(entry_feature10.get())
         feature11 = float(entry_feature11.get())
         feature12 = float(entry_feature12.get())
         feature13 = float(entry_feature13.get())
@@ -86,6 +88,8 @@ def predict_price():
             'BEDS': [feature6],
             'BATHS': [feature7],
             'SQUARE FEET': [feature8],
+            'LOT SIZE': [feature9],
+            '$/SQUARE FEET': [feature10],
             'LATITUDE': [feature11],
             'LONGITUDE': [feature12],
             'HOA/MONTH': [feature13],
@@ -211,6 +215,16 @@ label_feature8 = tk.Label(app, text='Square feet:')
 label_feature8.grid(row=8, column=0, padx=10, pady=10)
 entry_feature8 = tk.Entry(app)
 entry_feature8.grid(row=8, column=1, padx=10, pady=10)
+
+label_feature9 = tk.Label(app, text='Lot Size:')
+label_feature9.grid(row=9, column=0, padx=10, pady=10)
+entry_feature9 = tk.Entry(app)
+entry_feature9.grid(row=9, column=1, padx=10, pady=10)
+
+label_feature10 = tk.Label(app, text='Price Per a Square Foot:')
+label_feature10.grid(row=10, column=0, padx=10, pady=10)
+entry_feature10 = tk.Entry(app)
+entry_feature10.grid(row=10, column=1, padx=10, pady=10)
 
 label_feature11 = tk.Label(app, text='Latitude:')
 label_feature11.grid(row=12, column=0, padx=10, pady=10)
