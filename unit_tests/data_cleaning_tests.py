@@ -19,7 +19,6 @@ from data_set_prep.data_cleaning import (combine_csv_files,
                                         calc_price_per_sqft, lot_size_prep, 
                                         drop_null_rows)
 
-
 @contextmanager
 def captured_output():
     """Captures the printed statement from the methods in data_cleaning
